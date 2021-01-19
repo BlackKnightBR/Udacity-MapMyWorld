@@ -1,6 +1,8 @@
 # Udacity Map My World
 Project for udacity nanodegree Robotics Software Engineer
 
+![My large image](MapMyWOrldScreen.png)
+
 
 ### This folder contains the required structure files generated in the Udacity "Map my world" Udacity project.
 

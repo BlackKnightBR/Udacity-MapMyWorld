@@ -2,6 +2,60 @@
 
 <robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<xacro:include filename="$(find my_robot)/urdf/my_robot.gazebo" />
+
+<link name="base_footprint"></link>
+
+<!-- Joints-->
+
+  <joint type="continuous" name="right_wheel_hinge">
+    <origin xyz="0 -0.15 0" rpy="0 0 0"/>
+    <child link="right_wheel"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="base_footprint"/>
+    <child link="chassis" />
+  </joint>
+
+  <joint type="fixed" name="hokuyo_joint">
+    <origin xyz="0.15 0 .1" rpy="0 0 0"/>
+    <child link="hokuyo"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint type="continuous" name="left_wheel_hinge">
+    <origin xyz="0 0.15 0" rpy="0 0 0"/>
+    <child link="left_wheel"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
+
+  <joint type="fixed" name="camera_joint">
+    <origin xyz="0.2 0 0" rpy="0 0 0"/>
+    <child link="camera_link"/>
+    <parent link="chassis"/>
+    <axis xyz="0 1 0" rpy="0 0 0"/>
+  </joint>
+
+   <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5707 0 -1.5707"/>
+    <parent link="camera_link"/>
+    <child link="camera_link_optical"/>
+  </joint>
+
+
+
+<!-- Links -->
+
 <link name="hokuyo">
    <visual>
      <origin xyz="0 0 0" rpy="0 0 0" />
@@ -27,19 +81,8 @@
 	 />
    </inertial>
  </link>
-
- <joint type="fixed" name="hokuyo_joint">
-    <origin xyz="0.15 0 .1" rpy="0 0 0"/>
-    <child link="hokuyo"/>
-    <parent link="chassis"/>
-    <axis xyz="0 1 0" rpy="0 0 0"/>
-  </joint>
-
-  <gazebo reference="camera_link">
-  <material>Gazebo/Black</material>
-  </gazebo>
  
-  <link name="camera_link">
+ <link name="camera_link">
    <visual>
      <origin xyz="0 0 0" rpy="0 0 0" />
 	 <geometry>
@@ -65,25 +108,6 @@
    </inertial>
  </link>
 
- <joint type="fixed" name="camera_joint">
-    <origin xyz="0.2 0 0" rpy="0 0 0"/>
-    <child link="camera_link"/>
-    <parent link="chassis"/>
-    <axis xyz="0 1 0" rpy="0 0 0"/>
-  </joint>
-
-   <joint name="camera_optical_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="-1.5707 0 -1.5707"/>
-    <parent link="camera_link"/>
-    <child link="camera_link_optical"/>
-  </joint>
-
-  <link name="camera_link_optical">
-  </link> 	
-
-  <gazebo reference="left_whell">
-   <material>Gazebo/Black</material>
-  </gazebo>
 
   <link name="left_wheel">
     <inertial>
@@ -111,22 +135,6 @@
     </visual>
   </link>
 
-  <joint type="continuous" name="left_wheel_hinge">
-    <origin xyz="0 0.15 0" rpy="0 0 0"/>
-    <child link="left_wheel"/>
-    <parent link="chassis"/>
-    <axis xyz="0 1 0" rpy="0 0 0"/>
-    <limit effort="10000" velocity="1000"/>
-    <dynamics damping="1.0" friction="1.0"/>
-  </joint>
-
-  <gazebo reference="right_wheel">
-   <material>Gazebo/Black</material>
-  </gazebo>
-  <gazebo reference="left_wheel">
-   <material>Gazebo/Black</material>
-  </gazebo>
-
   <link name="right_wheel">
     <inertial>
 	<mass value="5" />
@@ -152,28 +160,6 @@
     	<origin xyz="0 0 0" rpy="0 1.5707 1.5707" />
     </visual>
   </link>
-
-  <joint type="continuous" name="right_wheel_hinge">
-    <origin xyz="0 -0.15 0" rpy="0 0 0"/>
-    <child link="right_wheel"/>
-    <parent link="chassis"/>
-    <axis xyz="0 1 0" rpy="0 0 0"/>
-    <limit effort="10000" velocity="1000"/>
-    <dynamics damping="1.0" friction="1.0"/>
-  </joint>
-
-  <xacro:include filename="$(find my_robot)/urdf/my_robot.gazebo" />
-  <link name="robot_footprint"></link>
-
-  <joint name="robot_footprint_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0" />
-    <parent link="robot_footprint"/>
-    <child link="chassis" />
-  </joint>
-
-<gazebo reference="chassis">
-   <material>Gazebo/Blue</material>
-  </gazebo>
 
   <link name='chassis'>
     <pose>0 0 0.1 0 0 0</pose>
@@ -230,7 +216,28 @@
         <sphere radius="0.05"/>
       </geometry>
     </visual>
+ </link>
+ 
+<link name="camera_link_optical">
+  </link> 
 
-  </link>
+<!-- Colors -->
 
+  <gazebo reference="chassis">
+   <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <gazebo reference="right_wheel">
+   <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="left_wheel">
+   <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo reference="camera_link">
+   <material>Gazebo/Black</material>
+  </gazebo>
+
+<!-- END -->
 </robot>
